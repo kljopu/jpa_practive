@@ -2,6 +2,8 @@ package jpastudy.datajpa.repotitory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.util.List;
+import java.util.Optional;
 import jpastudy.datajpa.entity.Member;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +20,24 @@ public class MemberJPARepository {
 
     public Member find(Long id) {
         return em.find(Member.class, id);
+    }
+
+    public Optional<Member> findById(Long id) {
+        Member member = em.find(Member.class, id);
+        return Optional.ofNullable(member);
+    }
+
+    public long count() {
+        return em.createQuery("select count(m) from Member  m", Long.class).getSingleResult();
+    }
+
+    public void delete(Member member) {
+        em.remove(member);
+    }
+
+    public List<Member> findAll() {
+        //JPQL
+        return em.createQuery("select m from Member m", Member.class).getResultList();
     }
 
 }
